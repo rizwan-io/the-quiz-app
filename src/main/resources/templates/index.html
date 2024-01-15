@@ -1,0 +1,128 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/output.css}" rel="stylesheet">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="bg-black">
+<section class="bg-[#FFFBEE] md:w-auto m-5 rounded-xl py-2 mb-12">
+    <form th:action="@{/quiz}" method="POST" th:object="${quizRequestBody}" class="grid grid-cols-12 p-5 px-12" id="createquiz">
+        <fieldset class="flex flex-col col-span-4">
+            <select th:field="*{category}" name="category" id="category" class="w-full bg-[#FFF613] p-3 border-2 border-black rounded-xl shadow-md shadow-black focus:outline-none font-semibold">
+                <option value="">Select Category</option>
+                <option value="science">Science</option>
+                <option value="technology">Technology</option>
+                <option value="music">Music</option>
+                <option value="history">History</option>
+            </select>
+            <label for="category" class="pt-2 pl-3 text-sm">Select the type of questions you'd like to attempt.</label>
+        </fieldset>
+
+        <div class="font-extrabold text-7xl row-span-2 col-span-2 col-start-6 text-center mx-auto font-serif">THE QUIZ</div>
+
+        <fieldset class="flex flex-col col-span-4 col-start-9 mb-4">
+            <select th:field="*{difficulty}" name="difficulty" id="difficulty" class="w-full bg-[#FFA133] p-3 border-2 border-black rounded-xl shadow-md shadow-black focus:outline-none font-semibold">
+                <option value="">Select Difficulty</option>
+                <option value="basic">Basic</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <label for="difficulty" class="pt-2 pl-3 text-sm">Choose the difficulty mode.</label>
+        </fieldset>
+
+        <fieldset class="flex flex-col col-span-4">
+            <div class="grid grid-flow-row grid-cols-12 bg-[#13FFB8] w-full px-3 border-2 border-black rounded-xl shadow-md shadow-black font-semibold">
+                <label for="quantity" class="col-span-9 py-3">Quantity</label>
+                <button type="button" class="rounded-full bg-black text-white col-span-1 my-auto w-7 h-7" id="decrement"><i class="fa fa-minus"></i></button>
+                <input th:field="*{quantity}" type="number" readonly value="10" class="bg-[#13FFB8] col-span-1 text-center focus:outline-none pointer-events-none" id="quantity" min="5" max="20">
+                <button type="button" class="rounded-full bg-black text-white col-span-1 my-auto w-7 h-7" id="increment"><i class="fa fa-plus"></i></button>
+            </div>
+            <label for="quantity" class="pt-2 pl-3 text-sm">Choose the amount of questions.</label>
+        </fieldset>
+
+
+        <fieldset class="flex flex-row col-span-4 col-start-9 justify-center">
+            <div class="flex flex-col w-1/2">
+                <button type="submit" class=" h-3/5 mr-1 bg-[#B4FF13] border-2 border-black rounded-xl shadow-md shadow-black font-semibold">Create Quiz</button>
+                <label for="difficulty" class="pt-2 pl-3 text-sm">Generate Quiz</label>
+            </div>
+
+            <div class="flex flex-col w-1/2 ">
+                <button type="reset" class="h-3/5 ml-1 bg-[#FF3E13] border-2 border-black rounded-xl shadow-md shadow-black font-semibold">Reset <i class="fa fa-refresh"></i></button>
+                <label for="difficulty" class="pt-2 pl-3 text-sm">Reset Selection</label>
+            </div>
+        </fieldset>
+    </form>
+</section>
+
+
+<form hidden="" th:action="@{/quiz/score}" method="post">
+    <main class="md:w-auto m-5 grid grid-cols-2" th:object="${questions}">
+        <!-- question 1 -->
+        <section th:each="question : ${questions}">
+            <section class="border-white border-2 rounded-xl p-4 mr-4 mb-4">
+                <h1 class="text-white text-lg" th:text="${question.question}"></h1>
+                <section>
+                    <ul class="donate-now list-none grid grid-cols-2">
+                        <li class="my-2 grid mr-8">
+                            <input  th:name="${question.id}" th:id="${question.optionA}" th:value="${question.optionA}" type="radio" class="hidden">
+                            <label  th:text="${question.optionA}" th:for="${question.optionA}" class="bg-white rounded-md p-3"></label>
+                        </li>
+
+                        <li class="my-2 grid mr-8">
+                            <input th:name="${question.id}" th:id="${question.optionB}" th:value="${question.optionB}" type="radio" class="hidden">
+                            <label th:text="${question.optionB}" th:for="${question.optionB}" class="bg-white rounded-md p-3"></label>
+                        </li>
+
+                        <li class="my-2 grid mr-8">
+                            <input th:name="${question.id}" th:id="${question.optionC}" th:value="${question.optionC}" type="radio" class="hidden">
+                            <label th:text="${question.optionC}" th:for="${question.optionC}" class="bg-white rounded-md p-3"></label>
+                        </li>
+
+                        <li class="my-2 grid mr-8">
+                            <input th:name="${question.id}" th:id="${question.optionD}" th:value="${question.optionD}" type="radio" class="hidden">
+                            <label th:text="${question.optionD}" th:for="${question.optionD}" class="bg-white rounded-md p-3"></label>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <div class="flex justify-center items-center mb-16">
+        <button type="submit" class="border-2 border-white text-white rounded-lg px-2 py-2 hover:bg-white hover:text-black hover:text-lg cursor-pointer hover:transition-all">Check Score</button>
+    </div>
+
+</form>
+
+
+    <script>
+		const numberInput = document.getElementById("quantity");
+		const incrementBtn = document.getElementById("increment");
+		const decrementBtn = document.getElementById("decrement");
+
+		incrementBtn.addEventListener("click", () => {
+			const currentValue = Number(numberInput.value);
+			numberInput.value = Math.min(20, currentValue + 1);
+		});
+
+		decrementBtn.addEventListener("click", () => {
+			const currentValue = Number(numberInput.value);
+			numberInput.value = Math.max(5, currentValue - 1);
+		})
+
+
+		const form = document.getElementById("createquiz");
+
+		form.addEventListener("click", (event) => {
+			if(event.target.type === "reset") {
+				form.reset();
+			}
+		})
+	</script>
+</body>
+</html>

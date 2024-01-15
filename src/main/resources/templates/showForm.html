@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quiz App | Create Quiz</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Quiz</h1>
+        <hr>
+
+        <form th:action="@{/quiz}" method="POST" th:object="${quizRequestBody}">
+            <div class="form-group row">
+                <div class="col">
+                    <label for="category">Category</label>
+                    <select name="category" id="category" class="form-select" aria-label="Default select example" th:field="*{category}">
+                        <option value="Science">Science</option>
+                        <option value="Math">Math</option>
+                        <option value="General Knowledge">General Knowledge</option>
+                        <option value="Music">Music</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <label for="difficulty">Difficulty</label>
+                    <select name="difficulty" id="difficulty" class="form-select" aria-label="Default select example" th:field="*{difficulty}">
+                        <option value="Basic">Basic</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col">
+                    <label for="quantity">Questions</label>
+                    <input type="number" class="form-control" name="quantity" id="quantity" th:field="*{quantity}" min="1" max="10">
+                </div>
+
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Create Quiz</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
